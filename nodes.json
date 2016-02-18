@@ -1,0 +1,28 @@
+{
+  "nodes": {
+    "puppet-master": {
+      ":box": "ubuntu/trusty64",
+      ":hostname": "puppet",
+      ":ip": "192.168.1.2",
+      ":fwdguest": "8140",
+      ":fwdhost": "8140",
+      ":ram": "1024",
+      ":bootstrap": "bootstrap-master.sh",
+      ":gui": "true",
+      ":cpu": "2",
+      ":msg": "this is the puppet master"
+    },
+    "node01": {
+      ":box": "ubuntu/trusty64",
+      ":hostname": "node1",
+      ":ip": "192.168.1.3",
+      ":fwdguest": "80",
+      ":fwdhost": "8880",
+      ":ram": "512",
+      ":bootstrap": "bootstrap-node.sh",
+      ":gui": "true",
+      ":cpu": "2",
+      ":msg": "this is node 1 server"
+    }
+  }
+}
