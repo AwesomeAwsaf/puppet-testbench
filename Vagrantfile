@@ -1,7 +1,7 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-domain = 'awezone.com'
+domain = 'AweZone.com'
 
 nodes_config = (JSON.parse(File.read("nodes.json")))['nodes']
 
@@ -13,27 +13,23 @@ nodes_config = (JSON.parse(File.read("nodes.json")))['nodes']
 
 		    config.vm.define node_name do |nodeconfig|    
 
-		     nodeconfig.vm.box = node_values[':box']
-		     nodeconfig.vm.hostname = node_values[':hostname'] #+ '.' + domain
+		     nodeconfig.vm.box = node_values[':box'] ### read box name from nodes.json
+		     nodeconfig.vm.hostname = node_values[':hostname'] #+ '.' + domain ### read hostname from nodes.json
 			 
-			 nodeconfig.vm.network :private_network, ip: node_values[':ip']#, auto_config: false # adapter:2, 
+			 nodeconfig.vm.network :private_network, ip: node_values[':ip']#, auto_config: false # adapter:2,  ### read IP from nodes.json
 			 #nodeconfig.vm.network :private_network, type: "dhcp"
 			 #nodeconfig.ssh.insert_key=false
 
-			 if node_values[':fwdhost1']
+			 if node_values[':fwdhost1'] ### check if nodes.json has 1st fwd'ing port info
         		nodeconfig.vm.network :forwarded_port, guest: node_values[':fwdguest1'], host: node_values[':fwdhost1'], id: node_values[':portid1'], auto_correct: true
       		 end
 
-      		 if node_values[':fwdhost2']
+      		 if node_values[':fwdhost2'] ### check if nodes.json has 2nd fwd'ing port info
         		nodeconfig.vm.network :forwarded_port, guest: node_values[':fwdguest2'], host: node_values[':fwdhost2'], id: node_values[':portid2'], auto_correct: true
       		 end
 
-
-		     #nodeconfig.vm.network :forwarded_port, guest: node_values[':fwdguest1'], host: node_values[':fwdhost1'], id: node_values[':portid1'], auto_correct: true
-		     #nodeconfig.vm.network :forwarded_port, guest: node_values[':fwdguest2'], host: node_values[':fwdhost2'], id: node_values[':portid2'], auto_correct: true
-			 
-			 nodeconfig.vm.synced_folder "testdata", "/test_data", create: true
-
+			 nodeconfig.vm.synced_folder "testdata", "/test_data", create: true  ### sync folder info not from nodes.json but specified here for all VMs
+			 ### Further options for synced folders ###
 			 #nodeconfig.vm.synced_folder "./", "/vagrant", disabled: true
 			 #nodeconfig.vm.synced_folder "../data", "/vagrant_data", create: true
 			 #nodeconfig.vm.synced_folder "./", "/vagrant", type: "rsync", rsync__exclude: ".git/"
@@ -41,12 +37,12 @@ nodes_config = (JSON.parse(File.read("nodes.json")))['nodes']
 			 ### Need to run ###vagrant rsync### on host to trigger rsync OR 
 			 ### Need to run ###"vagrant rsync-auto &"### command on the host to start the rsync on host and watch the sync from HOST-> GUEST in live
 			 
-			 nodeconfig.vm.post_up_message = node_values[':msg']
+			 nodeconfig.vm.post_up_message = node_values[':msg'] ### message to displayed, read from nodes.json 
 
-			  
-				if  node_values[':guestos']
-			 		nodeconfig.vm.guest = node_values[':guestos']
-			 		nodeconfig.vm.communicator = node_values[':vmcomm'] 
+			  	### All below steps only for Windows Guests###
+				if  node_values[':guestos'] ### To check if this is a Windows VM
+			 		nodeconfig.vm.guest = node_values[':guestos'] ### to specify guest tools to be installed for Virtualbox
+			 		nodeconfig.vm.communicator = "winrm"
     		 		nodeconfig.winrm.username = "vagrant"
 			 		nodeconfig.winrm.password = "vagrant"
 			 		nodeconfig.windows.halt_timeout = 15
@@ -54,13 +50,13 @@ nodes_config = (JSON.parse(File.read("nodes.json")))['nodes']
 			 
 
 			 nodeconfig.vm.provider :virtualbox do |vb, override|
-				vb.customize ["modifyvm", :id, "--memory", node_values[':ram']]
-				vb.customize ["modifyvm", :id, "--name", node_name]
-				vb.customize ["setextradata", "global", "GUI/SuppressMessages", "all" ]
+				vb.customize ["modifyvm", :id, "--memory", node_values[':ram']]  ### setting RAM
+				vb.customize ["modifyvm", :id, "--name", node_name] ### Setting VM name in Virtualbox
+				vb.customize ["setextradata", "global", "GUI/SuppressMessages", "all" ] #### Windows 
 				if  node_values[':gui']
-					vb.gui = node_values[':gui']
+					vb.gui = node_values[':gui'] ### get gui=true from nodes.json
 				end
-				vb.cpus = node_values[':cpu']
+				vb.cpus = node_values[':cpu'] ### set no. of cpus
 			end
 
 	      #node_config.vm.provision :shell, :path => node_values[':bootstrap']

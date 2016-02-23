@@ -2,7 +2,7 @@
   "nodes": {
     "puppet-master": {
       ":box": "ubuntu/trusty64",
-      ":hostname": "puppet",
+      ":hostname": "puppet.AweZone.com",
       ":ip": "10.10.10.10",
       ":fwdguest1": "8140",
       ":fwdhost1": "8140",
@@ -22,7 +22,6 @@
       ":fwdguest2": "22",
       ":fwdhost2": "2222",
       ":portid2": "ssh",
-      ":vmcomm": "winrm",
       ":ram": "2048",
       ":bootstrap": "provision.bat",
       ":gui": "true",
@@ -32,7 +31,7 @@
     },
       "node01": {
       ":box": "geerlingguy/ubuntu1404",
-      ":hostname": "node1-ubuntu",
+      ":hostname": "node1-ubuntu.AweZone.com",
       ":ip": "10.10.10.11",
       ":fwdguest1": "80",
       ":fwdhost1": "8880",
@@ -44,7 +43,7 @@
     },
     "node02": {
       ":box": "geerlingguy/centos7",
-      ":hostname": "node2-centos",
+      ":hostname": "node2-centos.AweZone.com",
       ":ip": "10.10.10.12",
       ":fwdguest1": "80",
       ":fwdhost1": "8800",
