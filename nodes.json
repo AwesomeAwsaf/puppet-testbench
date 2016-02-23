@@ -3,26 +3,56 @@
     "puppet-master": {
       ":box": "ubuntu/trusty64",
       ":hostname": "puppet",
-      ":ip": "192.168.1.2",
-      ":fwdguest": "8140",
-      ":fwdhost": "8140",
-      ":ram": "1024",
+      ":ip": "10.10.10.10",
+      ":fwdguest1": "8140",
+      ":fwdhost1": "8140",
+      ":portid1": "puppetport",
+      ":ram": "512",
       ":bootstrap": "bootstrap-master.sh",
-      ":gui": "true",
       ":cpu": "2",
       ":msg": "this is the puppet master"
     },
-    "node01": {
-      ":box": "ubuntu/trusty64",
-      ":hostname": "node1",
-      ":ip": "192.168.1.3",
-      ":fwdguest": "80",
-      ":fwdhost": "8880",
-      ":ram": "512",
-      ":bootstrap": "bootstrap-node.sh",
+      "windows2k8": {
+      ":box": "opentable/win-2008r2-standard-amd64-nocm",
+      ":hostname": "node3-windows",
+      ":ip": "10.10.10.15",
+      ":fwdguest1": "3389",
+      ":fwdhost1": "33389",
+      ":portid1": "rdp",
+      ":fwdguest2": "22",
+      ":fwdhost2": "2222",
+      ":portid2": "ssh",
+      ":vmcomm": "winrm",
+      ":ram": "2048",
+      ":bootstrap": "provision.bat",
       ":gui": "true",
       ":cpu": "2",
-      ":msg": "this is node 1 server"
+      ":guestos": "windows",
+      ":msg": "this is the windows server"
+    },
+      "node01": {
+      ":box": "geerlingguy/ubuntu1404",
+      ":hostname": "node1-ubuntu",
+      ":ip": "10.10.10.11",
+      ":fwdguest1": "80",
+      ":fwdhost1": "8880",
+      ":portid1": "webserver1",
+      ":ram": "256",
+      ":bootstrap": "bootstrap-node.sh",
+      ":cpu": "1",
+      ":msg": "this is node1 server"
+    },
+    "node02": {
+      ":box": "geerlingguy/centos7",
+      ":hostname": "node2-centos",
+      ":ip": "10.10.10.12",
+      ":fwdguest1": "80",
+      ":fwdhost1": "8800",
+      ":portid1": "webserver2",
+      ":ram": "256",
+      ":bootstrap": "bootstrap-node.sh",
+      ":cpu": "1",
+      ":msg": "this is node2 server"
     }
   }
 }
