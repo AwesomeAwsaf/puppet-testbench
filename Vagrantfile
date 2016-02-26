@@ -46,25 +46,36 @@ nodes_config = (JSON.parse(File.read("nodes.json")))['nodes']
     		 		nodeconfig.winrm.username = "vagrant"
 			 		nodeconfig.winrm.password = "vagrant"
 			 		nodeconfig.windows.halt_timeout = 15
+			 		
+				    nodeconfig.vm.provision :shell, :path => "scripts/InstallNet4.ps1"
+					nodeconfig.vm.provision :shell, :path => "scripts/SmokeCommands.ps1"
+					nodeconfig.vm.provision :shell, :path => "scripts/InstallChocolatey.ps1"
+					nodeconfig.vm.provision :shell, :path => "scripts/provision.ps1"
+					nodeconfig.vm.provision :reload
+					nodeconfig.vm.provision :shell, :path => "scripts/InstallPuppetFromMSI.ps1"
+					nodeconfig.vm.provision :reload
+	      	  		nodeconfig.vm.provision "shell", inline: "puppet agent --test --verbose > nul 2>&1"
+	      	  		nodeconfig.vm.provision "shell", inline: "echo 'Windows-related-scripts-done'"
 				end
-			 
 
 			 nodeconfig.vm.provider :virtualbox do |vb, override|
 				vb.customize ["modifyvm", :id, "--memory", node_values[':ram']]  ### setting RAM
 				vb.customize ["modifyvm", :id, "--name", node_name] ### Setting VM name in Virtualbox
 				vb.customize ["setextradata", "global", "GUI/SuppressMessages", "all" ] #### Windows 
+				vb.customize ["modifyvm", :id, "--clipboard", "bidirectional"]
 				if  node_values[':gui']
 					vb.gui = node_values[':gui'] ### get gui=true from nodes.json
 				end
 				vb.cpus = node_values[':cpu'] ### set no. of cpus
-			end
+			 end
 
-	      #node_config.vm.provision :shell, :path => node_values[':bootstrap']
-	   
-
-	      #node_config.vm.provision :puppet do |puppet|
-	        #puppet.manifests_path = 'provision/manifests'
-	        #puppet.module_path = 'provision/modules'
+	      	    if node_values[':guestos'] != 'windows'
+	      	     nodeconfig.vm.provision :puppet do |puppet|
+	              puppet.manifests_path = 'provision/manifests'
+	              puppet.module_path = 'provision/modules'
+	    	     end
+	    	    end
+	      	  nodeconfig.vm.provision :shell, :path => node_values[':bootstrap']
 	    end
 	end
 end	
