@@ -20,8 +20,12 @@ class puppet::params {
   case $::osfamily {
     'redhat': {
       $server_package_name = 'puppet-server'
+      $server_service_name = 'puppetmaster'
     }
     'debian': {
+      #$server_package_name = 'puppetmaster-passenger'
+      #$server_service_name = 'apache2'
+      $server_service_name = 'puppetmaster'
       $server_package_name = 'puppetmaster'
     }
     default: {

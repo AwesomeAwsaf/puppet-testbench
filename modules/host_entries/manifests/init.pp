@@ -1,3 +1,4 @@
+## Updates the hosts file 
 class host_entries {
 
   host { 'puppet.awezone.com':

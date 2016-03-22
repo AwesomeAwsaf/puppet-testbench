@@ -10,7 +10,7 @@ $SysInfo.JoinDomainOrWorkgroup("awezone.com")
 Write-Host 'Adding puppet (10.10.10.10) to hosts file.'
 Add-Content $env:SystemDrive\Windows\System32\Drivers\etc\hosts "`r`n10.10.10.10     puppet"
 
-Restart-Computer
+#Restart-Computer
 choco list -la
 #choco install puppet-agent -version 1.2.5 -y
 #choco list -la

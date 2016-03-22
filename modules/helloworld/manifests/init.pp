@@ -13,13 +13,15 @@
 #
 # class { 'helloworld': }
 #
-class helloworld {
+class helloworld (
+    $path = $helloworld::params::filepath,
+    )inherits helloworld::params {
 
-  file { '/tmp/hello':
-    owner   => 'root',
-    group   => 'root',
-    mode    => '0666',
-    content => "its my world\n",
+  file { $path:
+    #owner   => 'root',
+    #group   => 'root',
+    #mode    => '0666',
+    #content => "its my new world\n",
+    content => template('helloworld/msg.erb'),
   }
-
 }
